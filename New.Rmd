@@ -1,0 +1,39 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r setup, include=False} # Setting Up
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+dollar <- scan("/Users/huydang/Desktop/STA457 (TS) /Assignments (4 total)/HW1 /Dataset/Q1/dollar.txt") # Asssign dataset to variable dollar
+dollar <- ts(log(dollar)) # Transform the dataset into log-scale ts-object
+```
+
+```{r}
+# Plot correlogram of original data
+acf(dollar, main="Correlogram of the Time Series", lag.max = 20) 
+
+# Plot periodogram of original data
+spec.pgram(dollar, main = "Periodogram of Time Series", demean=T,detrend=F) 
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
