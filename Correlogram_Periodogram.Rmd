@@ -1,29 +1,81 @@
 ---
-title: "R Notebook"
-output: html_notebook
+title: "A1 Q1"
+author: "Huy Dang"
+date: "2024-09-07"
+output: html_document
 ---
-
 ```{r setup, include=False} # Setting Up
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
 ```{r}
-dollar <- scan("/Users/huydang/Desktop/STA457 (TS) /Assignments (4 total)/HW1 /Dataset/Q1/dollar.txt") # Asssign dataset to variable dollar
+# QUESTION 1
+dollar <- scan("/Users/huydang/Desktop/STA457 (TS) /Assignments/HW1 /Dataset/Q1/dollar.txt") # Asssign dataset to variable dollar
 dollar <- ts(log(dollar)) # Transform the dataset into log-scale ts-object
 ```
 
 ```{r}
 # Plot correlogram of original data
-acf(dollar, main="Correlogram of the Time Series", lag.max = 20) 
+acf(dollar, main="Correlogram of First Difference", lag.max = 20) 
 
 # Plot periodogram of original data
-spec.pgram(dollar, main = "Periodogram of Time Series", demean=T,detrend=F) 
+spec.pgram(dollar, main="Periodogram of First Difference", demean=T, detrend=F) 
+```
+
+```{r}
+# assign first dif.
+returns <- diff(dollar)
+# plot correlogram of first dif.
+acf(returns, main="Correlogram of Absolute Value of First Difference", lag.max = 20)
+
+# plot periodogram of first dif.
+spec.pgram(returns, main="Periodogram", demean=T, detrend=F)
+```
+
+```{r}
+# plot corre & periodo-gram of abs(first dif)
+acf(abs(returns), main="Correlogram", lag.max=20)
+spec.pgram(abs(returns), main="Periodogram of Absolute Value of First Difference", demean=T, detrend=F)
+```
+
+```{r}
+# TASK 2
+
+# Load CO2 data
+CO2 <- scan("/Users/huydang/Desktop/STA457 (TS) /Assignments/HW1 /Dataset/Q2/CO2.txt")
+CO2 <- ts(CO2,start=c(1958,3),end=c(2024,7),frequency=12)
+
+# plot periodogram of CO2
+spec.pgram(CO2, main="Periodogram of CO2 (1958 to 2024)", demean=T, detrend=F)
+```
+
+```{r}
+# Load CO2 trend data
+CO2_trend <- scan("/Users/huydang/Desktop/STA457 (TS) /Assignments/HW1 /Dataset/Q2/CO2-trend.txt")
+
+# Construct TS object for the trend 
+CO2_trend <- ts(CO2_trend,start=c(1958,3),end=c(2024,7),frequency=12)
+
+# Detrend the CO2 data
+CO2_detrended <- CO2 - CO2_trend
+
+# Plot detrended CO2 
+spec.pgram(CO2_detrended, main = "Periodogram of Detrended CO2 (1958 to 2024)",  demean = TRUE, detrend = FALSE)
+
 ```
 
 
+```{r}
+# Load periodogram for non-detrended data
+non_detrended <- spec.pgram(CO2, plot= FALSE, demean = TRUE, detrend = FALSE)
 
+# Load periodogram for detrended data
+detrended <- spec.pgram(CO2_detrended, plot = FALSE, demean = TRUE, detrend = FALSE)
 
+# Plot the non-detrended periodogram first
+plot(non_detrended$freq, non_detrended$spec, ylim = range(1e-04, 1e+04), type="l")
+     
 
+```
 
 
 
